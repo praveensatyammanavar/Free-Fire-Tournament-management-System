@@ -1,0 +1,6 @@
+{
+  "name": "Free Fire Tournament Management System",
+  "description": "Full-stack Free Fire esports tournament system with QR room registration, match scheduling, live match timer, manual kill updates, leaderboards, and administrative controls.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

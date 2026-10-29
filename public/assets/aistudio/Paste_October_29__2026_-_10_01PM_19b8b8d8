@@ -1,0 +1,924 @@
+# PROJECT: Free Fire Tournament Management System
+
+Act as a professional full-stack web developer and UI/UX designer. Build a complete, responsive, modern website for managing a large-scale Free Fire tournament with approximately 600 players.
+
+The website must be functional, secure, easy to use, and suitable for managing tournament registrations, room allocation, player statistics, kills, eliminations, disqualifications, and winners.
+
+Do not create just a static design. Build a complete working application with frontend, backend, database, QR code generation, authentication, and an admin dashboard.
+
+## 1. PROJECT OVERVIEW
+
+The tournament organizer is conducting a Free Fire tournament with approximately 600 players.
+
+Players will register by scanning a QR code assigned to their respective room.
+
+Each room can accommodate a maximum of 60 players.
+
+Therefore, the system should support:
+
+* Total tournament capacity: 600 players.
+* Maximum players per room: 60.
+* Number of rooms: 10.
+* Room names: Room 1, Room 2, Room 3, and so on up to Room 10.
+* A separate QR code for every room.
+* Individual player registration.
+* Admin-controlled kill updates.
+* Automatic player ranking and winner calculation.
+
+The system must allow the organizer to change the number of rooms and room capacity from the admin dashboard if required.
+
+## 2. USER ROLES
+
+Create two types of users.
+
+### A. Player
+
+Players can:
+
+* Scan their assigned room's QR code.
+* Open the player registration/login page.
+* Register using their details.
+* Enter their Free Fire player information.
+* View their own registration status.
+* View their room assignment.
+* Check their kills and tournament ranking.
+* See whether they are active, eliminated, or disqualified.
+
+Players must not be able to change their kills, rankings, room assignments, or disqualification status.
+
+### B. Admin
+
+The tournament organizer has full control of the website.
+
+Admin features:
+
+* Secure admin login.
+* Dashboard showing tournament statistics.
+* View and manage all registered players.
+* Generate QR codes for all rooms.
+* Download and print room QR codes.
+* Assign players to rooms.
+* Search and filter players.
+* Update player kills manually.
+* Mark players as eliminated.
+* Disqualify players.
+* Restore players if a disqualification was made by mistake.
+* View player rankings.
+* Export player data to CSV or Excel.
+* View tournament winners.
+* Manage tournament settings.
+
+Only authorized admins can modify tournament statistics.
+
+## 3. PLAYER REGISTRATION PAGE
+
+When a player scans a room's QR code, open the registration page for that specific room.
+
+Example:
+
+`https://yourdomain.com/register/room-1`
+
+The URL must identify the room automatically.
+
+Display a professional registration form with these fields:
+
+1. Player Name
+2. Free Fire In-Game Name
+3. Free Fire UID / Player ID
+4. Mobile Number
+5. Password
+6. Confirm Password
+7. Room Number — automatically selected from the QR code
+
+Add a checkbox:
+
+"I confirm that the information provided above is correct and I agree to the tournament rules."
+
+Add a prominent **Register Now** button.
+
+### Registration validation
+
+* All required fields must be completed.
+* Free Fire UID must follow an appropriate validation rule.
+* Mobile number must be validated.
+* Password and confirm password must match.
+* Prevent duplicate registrations using the same Free Fire UID.
+* Prevent duplicate mobile number registrations where appropriate.
+* Store passwords securely using bcrypt or Argon2 hashing.
+* Never store plain-text passwords.
+* Validate the registration on the backend.
+* Display clear success and error messages.
+* Prevent registration when the assigned room reaches its capacity of 60 players.
+* Prevent registrations when the tournament is closed.
+* Provide a unique player registration number.
+
+After successful registration, display:
+
+"Registration Successful!"
+
+Show the following information:
+
+* Player Name
+* Free Fire Name
+* Free Fire UID
+* Registration Number
+* Assigned Room
+* Registration Status
+
+Provide a button to return to the login page.
+
+IMPORTANT: Do not require players to provide their actual Free Fire account password. The website must only use its own password for website login.
+
+## 4. PLAYER LOGIN SYSTEM
+
+Create a separate player login page.
+
+Login fields:
+
+* Registered mobile number or username.
+* Website password.
+
+After successful login, open the player's personal dashboard.
+
+The dashboard should display:
+
+* Player Name
+* Free Fire Name
+* Free Fire UID
+* Registration Number
+* Assigned Room
+* Total Kills
+* Current Rank
+* Player Status
+* Tournament Results
+
+Player status options:
+
+* Registered
+* Active
+* Eliminated
+* Disqualified
+
+Players can view their own information but cannot edit their tournament statistics.
+
+Include logout functionality and secure session management.
+
+## 5. QR CODE GENERATION SYSTEM
+
+This is one of the most important features.
+
+Create a dedicated QR Code Management section in the admin dashboard.
+
+Automatically generate 10 unique QR codes for the 10 tournament rooms.
+
+Examples:
+
+Room 1 → QR Code 1
+Room 2 → QR Code 2
+Room 3 → QR Code 3
+Room 4 → QR Code 4
+Room 5 → QR Code 5
+Room 6 → QR Code 6
+Room 7 → QR Code 7
+Room 8 → QR Code 8
+Room 9 → QR Code 9
+Room 10 → QR Code 10
+
+Each QR code must open the correct room's registration page.
+
+Example:
+
+`https://yourdomain.com/register/room-1`
+
+When a player scans Room 1's QR code, the website must automatically select Room 1.
+
+When a player scans Room 2's QR code, the website must automatically select Room 2.
+
+Continue the same logic for all rooms.
+
+### QR code management features
+
+* Generate QR codes automatically.
+* Display room name above each QR code.
+* Display the registration URL.
+* Download individual QR codes as PNG.
+* Download QR codes as SVG if supported.
+* Print individual room QR codes.
+* Print all room QR codes together.
+* Display registered players and remaining seats for each room.
+* Show room capacity, such as 45/60 players.
+* Disable registration for a full room.
+* Allow the admin to regenerate a QR code if necessary.
+
+Use a reliable QR code library, such as the `qrcode` npm package.
+
+QR codes must contain room-specific registration URLs, not sensitive player information.
+
+## 6. ADMIN DASHBOARD
+
+Design a professional admin dashboard.
+
+### Dashboard statistics
+
+Display cards showing:
+
+* Total Tournament Capacity: 600
+* Total Registered Players
+* Available Seats
+* Total Active Players
+* Total Eliminated Players
+* Total Disqualified Players
+* Number of Rooms
+* Tournament Status
+
+Example:
+
+Total Capacity: 600
+Registered Players: 520
+Available Seats: 80
+Active Players: 350
+Eliminated Players: 150
+Disqualified Players: 20
+
+These are example values only. Calculate all statistics dynamically from the database.
+
+### Admin navigation menu
+
+Create a sidebar with these sections:
+
+1. Dashboard
+2. All Players
+3. Room Management
+4. QR Code Management
+5. Kill Management
+6. Leaderboard
+7. Disqualified Players
+8. Tournament Settings
+9. Reports and Exports
+10. Admin Profile
+11. Logout
+
+The sidebar should be responsive and collapse into a mobile menu on smaller screens.
+
+## 7. PLAYER MANAGEMENT TABLE
+
+Create a player management table showing all registered players.
+
+Display these columns:
+
+| No. | Player Name | Free Fire Name | Free Fire UID | Room | Total Kills | Status | Actions |
+| --- | ----------- | -------------- | ------------- | ---- | ----------- | ------ | ------- |
+
+For each player, provide admin actions:
+
+* View Details
+* Edit permitted player information
+* Update Kills
+* Mark Eliminated
+* Disqualify
+* Restore Player
+* Delete Registration, if authorized
+
+Add search functionality.
+
+Allow filtering by:
+
+* Room Number
+* Player Name
+* Free Fire UID
+* Active Players
+* Eliminated Players
+* Disqualified Players
+
+Add pagination so the website remains fast when displaying 600 or more players.
+
+Include confirmation dialogs before disqualifying a player or deleting a registration.
+
+Never allow a player to modify their own kill count or tournament status.
+
+## 8. MANUAL KILL MANAGEMENT
+
+The tournament organizer must be able to update kills manually.
+
+For example:
+
+Player Name: Rahul
+Room: Room 1
+Current Kills: 5
+
+Admin can click the **Update Kills** button.
+
+Open a small modal containing:
+
+* Player Name
+* Room Number
+* Current Kills
+* New Total Kills
+* Reason for Update
+* Save Changes button
+
+Example:
+
+Current Kills: 5
+New Total Kills: 8
+
+After saving, the player's total kills become 8.
+
+### Kill management requirements
+
+* Kills must be non-negative integers.
+* Only admins can update kills.
+* Update the database immediately after a successful save.
+* Refresh the leaderboard automatically.
+* Record who changed the kills, when the change happened, the old value, the new value, and the reason.
+* Prevent unauthorized changes.
+* Display a success notification after saving.
+* Show an error message if saving fails.
+
+Provide a separate **Quick Kill Update** interface for faster tournament management.
+
+The admin should be able to search for a player and update kills without navigating through multiple pages.
+
+IMPORTANT: Store the player's total kills as the official score. If the admin changes the total from 5 to 8, the official score should become 8, not 13.
+
+## 9. PLAYER ELIMINATION AND DISQUALIFICATION
+
+These are two different conditions and must be implemented separately.
+
+### Eliminated
+
+When the admin marks a player as eliminated:
+
+* Change the player's status to Eliminated.
+* Preserve their total kills.
+* Keep their results visible in the leaderboard.
+* Prevent further participation in the current round.
+* Do not automatically disqualify the player.
+
+### Disqualified
+
+When the admin disqualifies a player:
+
+* Ask for a disqualification reason.
+* Require confirmation before applying the change.
+* Change the player's status to Disqualified.
+* Record the admin, date, time, and reason.
+* Preserve the player's historical kills and audit records.
+* Clearly label the player as disqualified.
+* Exclude disqualified players from the eligible winner rankings.
+* Allow an authorized admin to restore the player if necessary.
+
+Never permanently erase a player's match history when they are disqualified.
+
+## 10. LEADERBOARD AND AUTOMATIC WINNER SELECTION
+
+Create a real-time leaderboard.
+
+Display:
+
+| Rank | Player Name | Free Fire Name | Room | Total Kills | Status |
+| ---- | ----------- | -------------- | ---- | ----------- | ------ |
+
+Sort eligible players by total kills in descending order.
+
+Example:
+
+1. Rahul — 25 Kills
+2. Kiran — 22 Kills
+3. Arjun — 19 Kills
+4. Vijay — 15 Kills
+5. Sanjay — 12 Kills
+
+The player with the highest eligible kill count should appear in first place.
+
+### Leaderboard features
+
+* Automatically calculate ranks.
+* Update rankings whenever an admin changes kills.
+* Exclude disqualified players from eligible winner positions.
+* Keep eliminated players' results visible.
+* Highlight the top three eligible players.
+* Display the current leader.
+* Allow the admin to filter by room.
+* Provide an overall tournament leaderboard.
+* Provide separate room leaderboards.
+* Display player status clearly.
+* Add an option to export leaderboard results.
+
+### Tie-breaking rules
+
+If two or more eligible players have the same number of kills:
+
+* Display them as tied based on the same score.
+* Do not randomly select a winner.
+* Allow the admin to apply an officially announced tie-break rule.
+* Record any manual override and its reason.
+
+Do not declare a final winner until the admin marks the tournament results as finalized.
+
+## 11. ROOM MANAGEMENT SYSTEM
+
+Create a dedicated Room Management page.
+
+Each room should display:
+
+* Room Number
+* Room Name
+* Maximum Capacity
+* Registered Players
+* Available Seats
+* Room QR Code
+* Room Registration Status
+* View Players button
+
+Example:
+
+Room 1
+Capacity: 60
+Registered: 55
+Available: 5
+Status: Open
+
+Room 2
+Capacity: 60
+Registered: 60
+Available: 0
+Status: Full
+
+Room 3
+Capacity: 60
+Registered: 42
+Available: 18
+Status: Open
+
+Automatically update room statistics whenever a player registers.
+
+### Room rules
+
+* No room can exceed its capacity.
+* Room capacity must be checked on the backend.
+* Multiple players registering simultaneously must not cause overbooking.
+* Full rooms must reject new registrations.
+* Players must be assigned to the room associated with their QR code.
+* Only an authorized admin can move a player between rooms.
+* Log room assignment changes.
+* Do not allow players to select a different room manually during registration.
+
+Use proper database transactions or atomic operations where appropriate to prevent overbooking.
+
+## 12. TOURNAMENT SETTINGS
+
+Add a settings page where the admin can manage:
+
+* Tournament Name
+* Tournament Description
+* Tournament Date
+* Tournament Start Time
+* Registration Start and End Time
+* Maximum Total Players
+* Number of Rooms
+* Maximum Players Per Room
+* Registration Open/Closed Status
+* Tournament Status
+* Kill Scoring Rules
+* Tie-Breaking Rules
+* Final Results Status
+
+Allow the admin to open or close registrations.
+
+When registration is closed, players must not be able to register even if seats are available.
+
+Display a clear message on the registration page when registration is closed.
+
+Do not allow settings changes to silently overfill existing rooms.
+
+## 13. REPORTS AND DATA EXPORT
+
+Create a reports section.
+
+Allow the admin to export:
+
+* All registered players.
+* Players grouped by room.
+* Player kill statistics.
+* Eliminated players.
+* Disqualified players.
+* Final leaderboard.
+* Tournament results.
+
+Support CSV and Excel exports.
+
+Include these fields in the full player export:
+
+* Registration Number
+* Player Name
+* Free Fire Name
+* Free Fire UID
+* Room Number
+* Total Kills
+* Player Status
+* Registration Date
+
+Never include passwords or password hashes in exported files.
+
+Provide printable room-wise player lists so the organizer can use them during the tournament.
+
+## 14. DESIGN AND USER INTERFACE
+
+Create a modern esports-style UI.
+
+### Visual style
+
+Use:
+
+* Dark navy background.
+* Black and dark gray surfaces.
+* Orange highlights.
+* White text.
+* Green for active status.
+* Red for disqualified status.
+* Yellow for eliminated status.
+
+Suggested color palette:
+
+* Primary Background: #0B1020
+* Secondary Background: #151C2F
+* Primary Accent: #FF6B00
+* Main Text: #FFFFFF
+* Secondary Text: #A7B0C0
+* Success: #22C55E
+* Danger: #EF4444
+* Warning: #FACC15
+
+### Design requirements
+
+* Professional esports tournament appearance.
+* Modern cards and tables.
+* Clear typography.
+* Consistent spacing.
+* Smooth but subtle animations.
+* Loading indicators.
+* Empty states.
+* Error messages.
+* Success notifications.
+* Confirmation modals.
+* Responsive desktop, tablet, and mobile layouts.
+* Accessible forms and buttons.
+* Good contrast and readable text.
+
+Make the admin dashboard efficient for tournament staff who must update kills quickly during live matches.
+
+Avoid excessive animations that slow down the interface.
+
+Do not use copyrighted Free Fire logos or official artwork unless the organizer has permission. Create an original esports-inspired design instead.
+
+## 15. RECOMMENDED TECHNOLOGY STACK
+
+Build the application using the MERN stack.
+
+### Frontend
+
+* React.js
+* Vite
+* React Router
+* Axios
+* Tailwind CSS
+* Lucide React icons
+* A QR code library for generating and downloading QR codes
+
+### Backend
+
+* Node.js
+* Express.js
+* MongoDB
+* Mongoose
+* bcrypt or Argon2 for password hashing
+* JWT-based authentication or secure server-side sessions
+* Validation middleware
+* Rate limiting
+* Helmet security middleware
+
+### Real-time updates
+
+Use Socket.IO or an equivalent solution if appropriate to update the admin dashboard and leaderboard without requiring a full page refresh.
+
+Real-time updates should be implemented securely so players cannot send unauthorized kill or status updates.
+
+### Deployment
+
+Prepare the application for deployment.
+
+The frontend should be deployable to a suitable static hosting platform, and the backend to a Node.js hosting platform.
+
+Use MongoDB Atlas or another appropriately configured MongoDB deployment for production.
+
+Store sensitive configuration in environment variables.
+
+Do not hardcode database credentials, JWT secrets, admin passwords, or other secrets into source code.
+
+## 16. DATABASE DESIGN
+
+Create appropriate MongoDB models.
+
+### Player Model
+
+Include:
+
+* registrationNumber
+* playerName
+* freeFireName
+* freeFireUID
+* mobileNumber
+* passwordHash
+* roomId
+* totalKills
+* status
+* registrationDate
+* updatedAt
+
+Use unique indexes where appropriate for registration numbers, Free Fire UIDs, and mobile numbers.
+
+### Room Model
+
+Include:
+
+* roomNumber
+* roomName
+* capacity
+* registrationOpen
+* QR code registration route or token
+* createdAt
+* updatedAt
+
+The number of registered players should be calculated from reliable database records or maintained through a consistent, concurrency-safe mechanism.
+
+### Admin Model
+
+Include:
+
+* username
+* passwordHash
+* role
+* createdAt
+
+### Kill Audit Model
+
+Include:
+
+* playerId
+* previousKills
+* updatedKills
+* reason
+* updatedBy
+* updatedAt
+
+### Disqualification Audit Model
+
+Include:
+
+* playerId
+* reason
+* action
+* updatedBy
+* updatedAt
+
+### Tournament Model
+
+Include:
+
+* tournamentName
+* tournamentDate
+* registrationStatus
+* tournamentStatus
+* maxPlayers
+* roomCapacity
+* numberOfRooms
+* finalResultsPublished
+
+Add timestamps and database indexes wherever useful.
+
+Do not expose internal password hashes or sensitive authentication information through API responses.
+
+## 17. BACKEND API ENDPOINTS
+
+Implement secure REST APIs.
+
+Suggested player endpoints:
+
+POST /api/auth/register
+POST /api/auth/login
+POST /api/auth/logout
+GET /api/players/me
+GET /api/players/me/stats
+
+Suggested admin endpoints:
+
+POST /api/admin/login
+GET /api/admin/dashboard
+GET /api/admin/players
+GET /api/admin/players/:id
+PATCH /api/admin/players/:id
+PATCH /api/admin/players/:id/kills
+PATCH /api/admin/players/:id/status
+PATCH /api/admin/players/:id/room
+GET /api/admin/rooms
+POST /api/admin/rooms
+PATCH /api/admin/rooms/:id
+GET /api/admin/leaderboard
+GET /api/admin/reports
+GET /api/admin/audit-logs
+PATCH /api/admin/tournament/settings
+
+Adjust endpoint names if needed, but implement all required functionality.
+
+Every protected endpoint must validate authentication and authorization.
+
+Do not trust room IDs, kill counts, statuses, or roles supplied by the frontend without server-side validation.
+
+## 18. SECURITY REQUIREMENTS
+
+Security is essential because the website will handle approximately 600 player registrations.
+
+Implement:
+
+* Secure password hashing.
+* HTTPS in production.
+* Authentication and authorization middleware.
+* Admin-only access to management endpoints.
+* Server-side input validation.
+* Protection against brute-force login attempts.
+* Rate limiting for registration and login.
+* Secure cookie or token handling.
+* CORS restricted to the intended frontend origin.
+* Safe error messages.
+* Protection against NoSQL injection.
+* Secure environment-variable handling.
+* Audit logs for sensitive administrative changes.
+* Duplicate registration prevention.
+* Server-side room capacity enforcement.
+* Protection against unauthorized kill updates.
+* Protection against unauthorized room changes.
+* Protection against unauthorized disqualification changes.
+
+Use a safe, reliable approach to sessions and authentication. Do not store passwords in localStorage or expose password hashes to the frontend.
+
+The admin account must be created through a secure setup process. Never use a publicly documented default production password.
+
+## 19. PROJECT STRUCTURE
+
+Organize the project professionally.
+
+Example:
+
+free-fire-tournament/
+├── client/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   │   ├── Register.jsx
+│   │   │   ├── PlayerLogin.jsx
+│   │   │   ├── PlayerDashboard.jsx
+│   │   │   ├── AdminLogin.jsx
+│   │   │   ├── AdminDashboard.jsx
+│   │   │   ├── PlayerManagement.jsx
+│   │   │   ├── RoomManagement.jsx
+│   │   │   ├── QRManagement.jsx
+│   │   │   ├── KillManagement.jsx
+│   │   │   ├── Leaderboard.jsx
+│   │   │   └── TournamentSettings.jsx
+│   │   ├── services/
+│   │   ├── hooks/
+│   │   ├── layouts/
+│   │   ├── App.jsx
+│   │   └── main.jsx
+│   └── package.json
+├── server/
+│   ├── controllers/
+│   ├── models/
+│   ├── routes/
+│   ├── middleware/
+│   ├── services/
+│   ├── utils/
+│   ├── config/
+│   ├── app.js
+│   ├── server.js
+│   └── package.json
+├── .env.example
+├── .gitignore
+└── README.md
+
+You may adjust the structure to improve maintainability.
+
+## 20. IMPORTANT FUNCTIONAL REQUIREMENTS
+
+The following requirements must work correctly:
+
+1. A player scans the QR code for Room 1 and opens the Room 1 registration page.
+2. A player scans the QR code for Room 2 and opens the Room 2 registration page.
+3. The system never allows more than 60 registered players in a room.
+4. The system supports up to 600 players across 10 rooms by default.
+5. Registration data is stored in MongoDB.
+6. Registered players can log in using their website credentials.
+7. Players can view their own kill count and status.
+8. Only authorized admins can change kills.
+9. The admin can manually increase or decrease a player's total kills when correcting results.
+10. The leaderboard automatically sorts eligible players by total kills.
+11. Disqualified players do not appear as eligible winners.
+12. Eliminated players retain their results.
+13. The system records administrative changes.
+14. The admin can download and print QR codes.
+15. The admin can export player lists and leaderboard results.
+16. The system works on mobile phones and desktop computers.
+17. Data persists in the database after server restarts.
+18. Errors are handled properly.
+19. The system does not expose sensitive player information to unauthorized users.
+20. The tournament can be opened, paused, closed, and finalized by an authorized admin.
+
+## 21. TESTING REQUIREMENTS
+
+Test the complete application.
+
+Verify that:
+
+* Player registration works.
+* Login and logout work.
+* QR codes open the correct room.
+* Duplicate UIDs are rejected.
+* A room cannot exceed 60 players, including when multiple registrations occur simultaneously.
+* Admin authentication works.
+* Unauthorized users cannot access admin APIs.
+* Kill updates persist correctly.
+* The leaderboard recalculates correctly.
+* Disqualified players are excluded from winner eligibility.
+* Eliminated players retain their kills.
+* Room assignments update correctly.
+* CSV and Excel exports contain the correct data.
+* The website works on mobile and desktop.
+* Invalid input produces understandable errors.
+* Passwords are never stored in plain text.
+
+Include clear instructions for running the tests.
+
+## 22. FINAL DELIVERABLES
+
+Build the complete project, including:
+
+1. Fully functional React frontend.
+2. Fully functional Express backend.
+3. MongoDB database models and indexes.
+4. Player registration and login.
+5. Secure admin login.
+6. Admin dashboard.
+7. QR code generation and downloads.
+8. Room management.
+9. Manual kill management.
+10. Player elimination and disqualification.
+11. Automatic leaderboard and winner selection.
+12. Reports and CSV/Excel exports.
+13. Responsive UI.
+14. Error handling and security middleware.
+15. Environment variable example file.
+16. Complete README documentation.
+17. Installation instructions.
+18. Database setup instructions.
+19. Local development instructions.
+20. Production deployment instructions.
+21. Testing instructions.
+
+## 23. DEVELOPMENT INSTRUCTIONS FOR CLAUDE
+
+Before coding, briefly explain the architecture and implementation plan.
+
+Then create the actual working application.
+
+Do not stop after generating a design, mockup, wireframe, or sample component.
+
+Do not leave important features as placeholders.
+
+Do not use hardcoded sample player data as the production data source.
+
+You may create a clearly separated development-only seed script for testing.
+
+Connect the frontend to the real backend and database.
+
+Make sure all buttons, forms, filters, tables, QR code downloads, kill updates, and administrative actions work.
+
+If you have access to a coding environment, create the project files directly and run the application.
+
+Install required dependencies and fix compilation errors, runtime errors, and API integration problems.
+
+If the project is too large to implement in one step, divide it into clear phases and complete each phase without breaking the previous functionality.
+
+At the end, provide:
+
+* Project folder structure.
+* Installation commands.
+* Required environment variables.
+* How to create the first admin account securely.
+* How to start the frontend and backend.
+* How to configure MongoDB.
+* How to generate and print QR codes.
+* How to deploy the website.
+* Any remaining limitations.
+
+**Final objective:** Deliver a secure, production-oriented Free Fire tournament management website that can handle approximately 600 players, 10 rooms, 10 separate QR codes, manual kill updates, player elimination and disqualification, real-time rankings, and automatic winner selection.
